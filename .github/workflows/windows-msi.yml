@@ -44,4 +44,4 @@ jobs:
           name: SparkleShare-msi
           path: SparkleShare/Windows/SparkleShare.msi
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30
