@@ -1,20 +1,19 @@
 @echo off
-setlocal
 
 set WinDirNet=%WinDir%\Microsoft.NET\Framework
-set msbuild="%WinDirNet%\v4.0\msbuild.exe"
-if not exist %msbuild% set msbuild="%WinDirNet%\v4.0.30319\msbuild.exe"
+set msbuild=%WinDirNet%\v4.0\msbuild.exe
+if not exist "%msbuild%" set msbuild=%WinDirNet%\v4.0.30319\msbuild.exe
 set wixBinDir=%WIX%\bin
 
 if not exist ..\..\bin mkdir ..\..\bin
 copy Images\sparkleshare-app.ico ..\..\bin\
 
-if not exist %msbuild% (
-	echo Build failed ^(could not find msbuild in .NET Framework v4.0^)
+if not exist "%msbuild%" (
+	echo Build cannot proceed ^(could not find msbuild in .NET Framework v4.0 or v4.0.30319^)
 	exit /b 1
 )
 
-%msbuild% /t:Rebuild /p:Configuration=Release /p:Platform="Any CPU" "%~dp0\SparkleShare.sln"
+"%msbuild%" /t:Rebuild /p:Configuration=Release /p:Platform="Any CPU" "%~dp0\SparkleShare.sln"
 if errorlevel 1 (
 	echo Build failed.
 	exit /b 1
@@ -23,11 +22,11 @@ if errorlevel 1 (
 if "%1"=="installer" (
 	if exist "%wixBinDir%" (
 	  if not exist "%~dp0\..\..\bin\msysgit" (
-	  	echo Not building installer ^(missing "%~dp0\..\..\bin\msysgit"^)
+	  	echo Not building installer ^(missing required directory: bin\msysgit^)
 	  	exit /b 1
 	  )
 	  if not exist "%~dp0\..\..\bin\plugins" (
-	  	echo Not building installer ^(missing "%~dp0\..\..\bin\plugins"^)
+	  	echo Not building installer ^(missing required directory: bin\plugins^)
 	  	exit /b 1
 	  )
 	  if exist "%~dp0\SparkleShare.msi" del "%~dp0\SparkleShare.msi"
