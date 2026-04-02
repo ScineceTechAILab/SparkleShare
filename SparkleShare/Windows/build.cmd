@@ -1,8 +1,8 @@
 @echo off
 
 set WinDirNet=%WinDir%\Microsoft.NET\Framework
-set msbuild=%WinDirNet%\v4.0\msbuild.exe
-if not exist "%msbuild%" set msbuild=%WinDirNet%\v4.0.30319\msbuild.exe
+set "msbuild=%WinDirNet%\v4.0\msbuild.exe"
+if not exist "%msbuild%" set "msbuild=%WinDirNet%\v4.0.30319\msbuild.exe"
 set wixBinDir=%WIX%\bin
 
 if not exist ..\..\bin mkdir ..\..\bin
@@ -22,11 +22,11 @@ if errorlevel 1 (
 if "%1"=="installer" (
 	if exist "%wixBinDir%" (
 	  if not exist "%~dp0\..\..\bin\msysgit" (
-	  	echo Not building installer ^(missing required directory: bin\msysgit^)
+	  	echo Not building installer ^(missing required directory: SparkleShare-sources\bin\msysgit^)
 	  	exit /b 1
 	  )
 	  if not exist "%~dp0\..\..\bin\plugins" (
-	  	echo Not building installer ^(missing required directory: bin\plugins^)
+	  	echo Not building installer ^(missing required directory: SparkleShare-sources\bin\plugins^)
 	  	exit /b 1
 	  )
 	  if exist "%~dp0\SparkleShare.msi" del "%~dp0\SparkleShare.msi"
