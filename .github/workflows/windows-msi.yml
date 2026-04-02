@@ -1,0 +1,49 @@
+name: Build Windows MSI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '**'
+    paths:
+      - '.github/workflows/windows-msi.yml'
+      - 'SparkleShare/Windows/**'
+      - 'SparkleShare.sln'
+      - 'Sparkles/**'
+
+jobs:
+  build-msi:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+      uses: actions/checkout@v4
+
+      - name: Install WiX Toolset
+      run: choco install wixtoolset --version=3.11.2 --no-progress -y
+      shell: powershell
+
+      - name: Prepare build directories
+      run: |
+        New-Item -Path "$env:GITHUB_WORKSPACE\bin" -ItemType Directory -Force | Out-Null
+        New-Item -Path "$env:GITHUB_WORKSPACE\bin\plugins" -ItemType Directory -Force | Out-Null
+      shell: powershell
+
+      - name: Copy Git for installer payload
+      run: |
+        Copy-Item -Path "C:\Program Files\Git" -Destination "$env:GITHUB_WORKSPACE\bin\msysgit" -Recurse -Force
+      shell: powershell
+
+      - name: Build MSI
+      run: |
+        $env:WIX = "C:\Program Files (x86)\WiX Toolset v3.11"
+        & "$env:GITHUB_WORKSPACE\SparkleShare\Windows\build.cmd" installer
+      shell: powershell
+
+      - name: Upload MSI artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: SparkleShare-msi
+        path: SparkleShare/Windows/SparkleShare.msi
+        if-no-files-found: error
+        retention-days: 14
