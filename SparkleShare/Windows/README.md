@@ -14,7 +14,7 @@ Open a command prompt and execute the following:
 ```
 cd C:\path\to\SparkleShare-sources
 cd SparkleShare\Windows
-build
+build.cmd
 ```
 
 `C:\path\to\SparkleShare-sources\bin` should now contain `SparkleShare.exe`, which you can run.
@@ -26,10 +26,12 @@ To create an installer package, install [WiX 3.7](http://wix.codeplex.com/releas
 
 ```
 cd C:\path\to\SparkleShare-sources\SparkleShare\Windows\
-build installer
+build.cmd installer
 ```
 
 This will create `SparkleShare.msi` in the same directory.
+The installer build requires both `C:\path\to\SparkleShare-sources\bin\msysgit\` and
+`C:\path\to\SparkleShare-sources\bin\plugins\` to exist.
 
 
 ### Resetting SparkleShare settings
@@ -40,4 +42,3 @@ Remove `My Documents\SparkleShare` and `AppData\Roaming\org.sparkleshare.Sparkle
 ### Uninstalling
 
 You can uninstall SparkleShare through the Windows Control Panel.
-
